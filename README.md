@@ -50,6 +50,10 @@ See examples below for more complete integrations
 - [Database Write Batching](_examples/db)  
 3x - 15x throughput improvement plus reduced failure rate  
 
+## Architecture
+
+![architecture diagram](docs/batchy.png)
+
 ## Benchmarks
 
 ```
