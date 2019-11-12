@@ -3,8 +3,8 @@
 A nice little library for concurrent batching
 
 [![GoDoc](https://godoc.org/github.com/kevburnsjr/batchy?status.svg)](https://godoc.org/github.com/kevburnsjr/batchy)
-[![Go Report Card](https://goreportcard.com/badge/github.com/kevburnsjr/batchy?1)](https://goreportcard.com/report/github.com/kevburnsjr/batchy)
-[![Code Coverage](http://gocover.io/_badge/github.com/kevburnsjr/batchy?1)](http://gocover.io/github.com/kevburnsjr/batchy)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kevburnsjr/batchy?2)](https://goreportcard.com/report/github.com/kevburnsjr/batchy)
+[![Code Coverage](http://gocover.io/_badge/github.com/kevburnsjr/batchy?2)](http://gocover.io/github.com/kevburnsjr/batchy)
 
 The throughput of APIs, web services and background workers can sometimes be improved by orders of magnitude
 through the introduction of artificial latency in support of concurrent batching. When latency and batch size
