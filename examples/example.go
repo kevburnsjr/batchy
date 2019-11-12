@@ -9,7 +9,6 @@ import (
 	"github.com/kevburnsjr/batchy"
 )
 
-
 func main() {
 	// Unbatched
 	http.HandleFunc("/unbatched", func(w http.ResponseWriter, r *http.Request) {
@@ -17,8 +16,6 @@ func main() {
 	})
 
 	// Batched
-	// Max batch size 100
-	// Max wait time 100 milliseconds
 	batcher := batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
 		var ids = make([]string, len(items))
 		for i, v := range items {

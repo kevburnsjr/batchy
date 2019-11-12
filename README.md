@@ -15,7 +15,7 @@ This is a general purpose library for concurrent batching of any sort of operati
 be used to batch SQL Inserts, API Calls, Disk Writes, Queue Production, etc. It hides asynchronous processing
 behind a syncronous interface.
 
-The [example](examples/example.go) below illustrates an HTTP server writing strings to a file.
+The [example](examples/example.go) below illustrates 6x throughput for an HTTP server writing strings to local disk.
 
 ```go
 package main
@@ -29,7 +29,6 @@ import (
 	"github.com/kevburnsjr/batchy"
 )
 
-
 func main() {
 	// Unbatched
 	http.HandleFunc("/unbatched", func(w http.ResponseWriter, r *http.Request) {
@@ -37,8 +36,6 @@ func main() {
 	})
 
 	// Batched
-	// Max batch size 100
-	// Max wait time 100 milliseconds
 	batcher := batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
 		var ids = make([]string, len(items))
 		for i, v := range items {
@@ -63,7 +60,6 @@ func appendToFile(str string) (err error) {
 	f.Close()
 	return
 }
-
 ```
 
 Unbatched (2,309 req/s)
