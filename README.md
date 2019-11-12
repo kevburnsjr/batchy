@@ -52,7 +52,7 @@ See examples below for more complete integrations
 
 ## Architecture
 
-![architecture diagram](docs/batchy.png)
+![architecture diagram](docs/batchy-full.png)
 
 ## Benchmarks
 
