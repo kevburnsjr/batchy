@@ -14,9 +14,19 @@ This is a general purpose library for concurrent batching of any sort of operati
 be used to batch SQL inserts, API calls, disk writes, queue messages, stream records, emails, etc. The batcher
 hides asynchronous processing behind a syncronous interface.
 
-![architecture diagram](docs/batchy-arch.png)
+## Examples
+
+Here are a few examples illustrating performance improvements for different use cases
+
+- [Disk Write Batching](_examples/disk)  
+6x throughput improvement  
+
+- [Database Write Batching](_examples/db)  
+3x - 15x throughput improvement plus reduced failure rate  
 
 ## How to use it
+
+![architecture diagram](docs/batchy-arch.png)
 
 ```go
 // 100 max batch size
@@ -40,19 +50,6 @@ var table1 = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (er
 // Wait time begins when the first item is added to a batch.
 err := table1.Add("data")
 ```
-
-## Examples
-
-See examples below for more complete integrations
-
-- [Disk Write Batching](_examples/disk)  
-6x throughput improvement  
-
-- [Database Write Batching](_examples/db)  
-3x - 15x throughput improvement plus reduced failure rate  
-
-- [Using Interfaces](_examples/interfaces)  
-Integration guide. See Design section below  
 
 ## Design
 
