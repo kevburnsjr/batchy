@@ -21,7 +21,8 @@ hides asynchronous processing behind a syncronous interface.
 // 100 max batch size
 // 100 milliseconds max batch wait time
 var table1 = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
-	q := fmt.Sprintf(`INSERT INTO table1 (data) VALUES %s`, strings.Trim(strings.Repeat(`(?),`, len(items)), ","))
+	q := fmt.Sprintf(`INSERT INTO table1 (data) VALUES %s`,
+		strings.Trim(strings.Repeat(`(?),`, len(items)), ","))
 	_, err := db.Exec(q, items...)
 	if err != nil {
 		errs = make([]error, len(items))
@@ -31,6 +32,8 @@ var table1 = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (er
 	}
 	return
 })
+```
+```go
 // Call to Add blocks calling go routine for up to 100ms + processing time.
 // If batch is filled before wait time expires, blocking will be reduced.
 // Wait time begins when the first item is added to a batch.
@@ -41,8 +44,8 @@ err := table1.Add("data")
 
 See examples below for more complete integrations
 
-- [Disk Write Batching](_examples/disk)  
-6x throughput improvement  
+- [Disk Write Batching](_examples/disk)
+6x throughput improvement
 
-- [Database Write Batching](_examples/db)  
-3x - 15x throughput improvement plus reduced failure rate  
+- [Database Write Batching](_examples/db)
+3x - 15x throughput improvement plus reduced failure rate
