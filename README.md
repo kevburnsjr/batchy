@@ -1,6 +1,6 @@
 # Batchy
 
-A nice little library for fan-in batching of highly concurrent workloads
+A nice little package with no dependencies for fan-in batching of highly concurrent workloads
 
 [![GoDoc](https://godoc.org/github.com/kevburnsjr/batchy?status.svg)](https://godoc.org/github.com/kevburnsjr/batchy)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kevburnsjr/batchy?2)](https://goreportcard.com/report/github.com/kevburnsjr/batchy)
@@ -9,13 +9,40 @@ A nice little library for fan-in batching of highly concurrent workloads
 The throughput of APIs, web services and background workers can sometimes be improved by orders of magnitude
 through the introduction of artificial latency in support of concurrent batching. When latency and batch size
 are well tuned, the client may not even experience added latency in most cases. These efficiency improvements
-can improve stability and scalability while lowering server costs.
+can improve service stability and total system throughput while lowering infrastructure costs.
 
 This is a general purpose library for concurrent batching of any sort of operation one might desire. It could
-be used to batch SQL Inserts, API Calls, Disk Writes, Queue Production, etc. It hides asynchronous processing
-behind a syncronous interface.
+be used to batch SQL inserts, API calls, disk writes, queue production, etc. The batcher hides asynchronous
+processing behind a syncronous interface.
 
-The [example](examples/example.go) below illustrates 6x throughput for an HTTP server writing strings to local disk.
+## How to use it
+
+```go
+// 100 max batch size
+// 100 milliseconds max batch wait time
+var table1 = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
+	q := fmt.Sprintf(`INSERT INTO table1 (data) VALUES %s`, strings.Trim(strings.Repeat(`(?),`, len(items)), ","))
+	_, err := db.Exec(q, items...)
+	if err != nil {
+		errs = make([]error, len(items))
+		for i := range errs {
+			errs[i] = err
+		}
+	}
+	return
+})
+// Call to Add blocks calling go routine for up to 100ms + processing time.
+// If batch is filled before wait time expires, blocking will be reduced.
+// Wait time begins when the first item is added to a batch.
+err := table1.Add("data")
+```
+
+## Examples
+
+- [Disk Write Batching](_examples/disk/main.go) 6x throughput improvement
+- [Database Write Batching](_examples/db/main.go) 3x - 15x throughput improvement plus reduced failure rate
+
+The [example](_examples/disk/main.go) below illustrates 6x throughput for an HTTP server writing strings to local disk.
 
 ```go
 package main
