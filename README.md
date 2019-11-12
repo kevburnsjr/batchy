@@ -24,14 +24,29 @@ Here are a few examples illustrating performance improvements for different use 
 - [Database Write Batching](_examples/db)  
 3x - 15x throughput improvement plus reduced failure rate  
 
-## How to use it
+## Structure
 
 ![architecture diagram](docs/batchy-arch.png)
 
 ```go
+package batchy
+
+type Processor func(items []interface{}) []error
+
+func New(itemLimit int, waitTime time.Duration, processor Processor) *batcher
+
+type Batcher interface {
+    Add(interface{}) error
+    Stop()
+}
+```
+
+## Usage
+
+```go
 // 100 max batch size
 // 100 milliseconds max batch wait time
-var table1 = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
+var batcher = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
 	q := fmt.Sprintf(`INSERT INTO table1 (data) VALUES %s`,
 		strings.Trim(strings.Repeat(`(?),`, len(items)), ","))
 	_, err := db.Exec(q, items...)
@@ -48,7 +63,7 @@ var table1 = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (er
 // Call to Add blocks calling go routine for up to 100ms + processing time.
 // If batch is filled before wait time expires, blocking will be reduced.
 // Wait time begins when the first item is added to a batch.
-err := table1.Add("data")
+err := batcher.Add("data")
 ```
 
 ## Design
