@@ -1,12 +1,24 @@
+# Database Write Batching
+
+This example illustrates 3x - 15x throughput improvement plus reduced failure rate
+
 ## 100 Concurrency
 
-Unbatched: 2690 req/s, stdev 78ms, 0% failure
-Batched:   8060 req/s, stdev 7ms, 0% failure
+```
+Unbatched: 2,690 req/s, stdev 78 ms, 0% failure
+Batched:   8,060 req/s, stdev  7 ms, 0% failure
+```
 
 ## 500 Concurrency
 
-Unbatched: 540 req/s, stdev 1378ms, 18% failure
-Batched:   8326 req/s, stdev 17ms, 0% failure
+```
+Unbatched:   540 req/s, stdev 1378 ms, 18% failure
+Batched:   8,326 req/s, stdev   17 ms,  0% failure
+```
+
+---
+
+https://github.com/kevburnsjr/batchy/blob/master/_examples/db/main.go#L1-L66
 
 ---
 

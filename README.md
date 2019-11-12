@@ -9,11 +9,11 @@ A nice little package with no dependencies for fan-in batching of highly concurr
 The throughput of APIs, web services and background workers can sometimes be improved by orders of magnitude
 through the introduction of artificial latency in support of concurrent batching. When latency and batch size
 are well tuned, the client may not even experience added latency in most cases. These efficiency improvements
-can improve service stability and total system throughput while lowering infrastructure costs.
+can result in increased service stability and total system throughput while lowering infrastructure costs.
 
 This is a general purpose library for concurrent batching of any sort of operation one might desire. It could
-be used to batch SQL inserts, API calls, disk writes, queue production, etc. The batcher hides asynchronous
-processing behind a syncronous interface.
+be used to batch SQL inserts, API calls, disk writes, queue messages, stream records, emails, etc. The batcher
+hides asynchronous processing behind a syncronous interface.
 
 ## How to use it
 
@@ -39,10 +39,10 @@ err := table1.Add("data")
 
 ## Examples
 
-- [Disk Write Batching](_examples/disk/main.go) 6x throughput improvement
-- [Database Write Batching](_examples/db/main.go) 3x - 15x throughput improvement plus reduced failure rate
+- [Disk Write Batching](_examples/disk) 6x throughput improvement
+- [Database Write Batching](_examples/db) 3x - 15x throughput improvement plus reduced failure rate
 
-The [example](_examples/disk/main.go) below illustrates 6x throughput for an HTTP server writing strings to local disk.
+The [example](_examples/disk) below illustrates 6x throughput for an HTTP server writing strings to local disk.
 
 ```go
 package main
