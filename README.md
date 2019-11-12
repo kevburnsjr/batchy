@@ -67,7 +67,6 @@ package repo
 
 import (
 	"io/ioutil"
-	"time"
 )
 
 type DataWriter interface {
@@ -77,7 +76,7 @@ type DataWriter interface {
 type dataWriter struct{}
 
 func (r *dataWriter) Write(data []byte) error {
-	return ioutil.WriteFile("test-"+time.Now().String(), data, 0644)
+	return ioutil.WriteFile("test1", data, 0644)
 }
 
 func NewDataWriter() *dataWriter {
@@ -110,7 +109,7 @@ func NewDataWriterBatched(maxItems int, maxWait time.Duration) *dataWriterBatche
 		for _, d := range items {
 			data = append(data, d.([]byte)...)
 		}
-		err := ioutil.WriteFile("test-"+time.Now().String(), data, 0644)
+		err := ioutil.WriteFile("test2", data, 0644)
 		if err != nil {
 			errs = make([]error, len(items))
 			for i := range errs {

@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/ioutil"
-	"time"
 )
 
 type DataWriter interface {
@@ -12,7 +11,7 @@ type DataWriter interface {
 type dataWriter struct{}
 
 func (r *dataWriter) Write(data []byte) error {
-	return ioutil.WriteFile("test-"+time.Now().String(), data, 0644)
+	return ioutil.WriteFile("test1", data, 0644)
 }
 
 func NewDataWriter() *dataWriter {
