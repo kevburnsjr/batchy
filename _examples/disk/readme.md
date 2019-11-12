@@ -2,15 +2,13 @@
 
 This example illustrates 6x throughput for an HTTP server writing strings to local disk.
 
+See [main.go](./main.go)
+
 ## 500 Concurrency
 ```
 Unbatched:  2,309 req/s, stdev 236 ms, 0% failure
 Batched:   13,829 req/s, stdev  12 ms, 0% failure
 ```
-
----
-
-https://github.com/kevburnsjr/batchy/blob/master/_examples/disk/main.go#L1-L45
 
 ---
 

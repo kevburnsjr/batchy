@@ -2,6 +2,8 @@
 
 This example illustrates 3x - 15x throughput improvement plus reduced failure rate
 
+See [main.go](./main.go)
+
 ## 100 Concurrency
 
 ```
@@ -15,10 +17,6 @@ Batched:   8,060 req/s, stdev  7 ms, 0% failure
 Unbatched:   540 req/s, stdev 1378 ms, 18% failure
 Batched:   8,326 req/s, stdev   17 ms,  0% failure
 ```
-
----
-
-https://github.com/kevburnsjr/batchy/blob/master/_examples/db/main.go#L1-L66
 
 ---
 
