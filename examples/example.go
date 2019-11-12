@@ -20,10 +20,16 @@ var batcher = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (e
 
 func main() {
 	http.HandleFunc("/batched", func(w http.ResponseWriter, r *http.Request) {
-		batcher.Add(r.FormValue("id"))
+		err := batcher.Add(r.FormValue("id"))
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+		}
 	})
 	http.HandleFunc("/unbatched", func(w http.ResponseWriter, r *http.Request) {
-		appendToFile(r.FormValue("id"))
+		err := appendToFile(r.FormValue("id"))
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+		}
 	})
 	http.ListenAndServe(":8080", nil)
 }
