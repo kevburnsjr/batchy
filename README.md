@@ -174,3 +174,8 @@ BenchmarkBatcher100ms/itemLimit_1000-12   2211993    499 ns/op    51 B/op   1 al
 PASS
 ok      github.com/kevburnsjr/batchy    21.737s
 ```
+
+## Case Study
+
+Benefits of artificial latency  
+http://kevburnsjr.com/roles/crunchyroll#efficiency
