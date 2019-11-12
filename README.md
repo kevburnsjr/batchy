@@ -44,8 +44,8 @@ err := table1.Add("data")
 
 See examples below for more complete integrations
 
-- [Disk Write Batching](_examples/disk)
-6x throughput improvement
+- [Disk Write Batching](_examples/disk)  
+6x throughput improvement  
 
-- [Database Write Batching](_examples/db)
-3x - 15x throughput improvement plus reduced failure rate
+- [Database Write Batching](_examples/db)  
+3x - 15x throughput improvement plus reduced failure rate  
