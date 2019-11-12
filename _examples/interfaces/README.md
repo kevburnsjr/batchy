@@ -1,6 +1,7 @@
 
 This package makes use of Go's empty interface `interface{}`. For this reason, it is best not to export
-any `Batcher` directly from your package. Instead it should be hidden behind exising interfaces.
+any `Batcher` directly from your package. Instead the batcher should be hidden behind an existing synchronous
+interface.
 
 Suppose you have the following code that writes bytes to a file:
 
