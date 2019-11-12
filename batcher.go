@@ -5,9 +5,12 @@ import (
 	"time"
 )
 
-// Batcher accepts items and returns errors
+// Batcher can add an item, returning the corresponding error
 type Batcher interface {
+	// Add adds an item to the current batch
 	Add(interface{}) error
+
+	// Stop stops the batcher
 	Stop()
 }
 
@@ -24,9 +27,9 @@ type batcher struct {
 }
 
 // New returns a new batcher
-//   itemLimit indicates the maximum number of items per batch
-//   waitTime indicates the amount of time to wait before processing a non-full batch
-//   processor is the processing function to call for the batch
+// - itemLimit indicates the maximum number of items per batch
+// - waitTime indicates the amount of time to wait before processing a non-full batch
+// - processor is the processing function to call for the batch
 func New(itemLimit int, waitTime time.Duration, processor Processor) *batcher {
 	return &batcher{
 		processor: processor,
@@ -64,8 +67,7 @@ func (b *batcher) Add(item interface{}) (err error) {
 	var ba = b.batch
 	var i = len(ba.items)
 	ba.items = append(ba.items, item)
-	if len(ba.items) == b.itemLimit {
-		go ba.process()
+	if len(ba.items) == b.itemLimit && ba.process() {
 		b.batch = nil
 	}
 	b.mutex.Unlock()

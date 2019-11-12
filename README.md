@@ -1,6 +1,6 @@
 # Batchy
 
-A nice little library for concurrent batching
+A nice little library for fan-in batching of highly concurrent workloads
 
 [![GoDoc](https://godoc.org/github.com/kevburnsjr/batchy?status.svg)](https://godoc.org/github.com/kevburnsjr/batchy)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kevburnsjr/batchy?2)](https://goreportcard.com/report/github.com/kevburnsjr/batchy)
@@ -11,7 +11,9 @@ through the introduction of artificial latency in support of concurrent batching
 are well tuned, the client may not even experience added latency in most cases. These efficiency improvements
 can improve stability and scalability while lowering server costs.
 
-This is a general purpose library for concurrent batching of any sort of operation one might desire.
+This is a general purpose library for concurrent batching of any sort of operation one might desire. It could
+be used to batch SQL Inserts, API Calls, Disk Writes, Queue Production, etc. It hides asynchronous processing
+behind a syncronous interface.
 
 The [example](examples/example.go) below illustrates an HTTP server writing strings to a file.
 
