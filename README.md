@@ -51,6 +51,9 @@ See examples below for more complete integrations
 - [Database Write Batching](_examples/db)  
 3x - 15x throughput improvement plus reduced failure rate  
 
+- [Using Interfaces](_examples/interfaces)  
+Integration guide. See Design section below  
+
 ## Design
 
 This package makes use of Go's empty interface `interface{}`. For this reason, it is best not to export
@@ -135,6 +138,15 @@ dw.Write([]byte("asdf"))
 
 and your code shouldn't need to know the difference because you've used interfaces to effectively hide the
 implementation details (in this case, the use of batching).
+
+## Why
+
+I created this repository because:
+
+1) I frequently see gophers get concurrent batching wrong.
+2) I frequently see gophers avoid batching altogether because it seems complicated.
+3) I frequently need this sort of batching and I'd rather not solve the same problem differently for every project.
+4) I want to help save the planet by making everyone's systems more energy efficient.
 
 ## Benchmarks
 
