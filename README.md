@@ -116,19 +116,19 @@ func (r *dataWriterBatched) Write(data []byte) error {
 }
 
 func NewDataWriterBatched(maxItems int, maxWait time.Duration) *dataWriterBatched {
-	return &dataWriterBatched{batchy.New(maxItems, maxWait, func(items []interface{}) (errs []error) {
+	return &dataWriterBatched{batchy.New(maxItems, maxWait, func(items []interface{}) []error {
+		errs := make([]error, len(items))
 		var data []byte
 		for _, d := range items {
 			data = append(data, d.([]byte)...)
 		}
 		err := ioutil.WriteFile("test2", data, 0644)
 		if err != nil {
-			errs = make([]error, len(items))
 			for i := range errs {
 				errs[i] = err
 			}
 		}
-		return
+		return errs
 	})}
 }
 ```
@@ -137,14 +137,14 @@ Now during dependency injection just replace
 
 ```go
 dw := repo.NewDataWriter()
-dw.Write([]byte("asdf"))
+dw.Write([]byte("data"))
 ```
 
 with
 
 ```go
 dw := repo.NewDataWriterBatched()
-dw.Write([]byte("asdf"))
+dw.Write([]byte("data"))
 ```
 
 and your code shouldn't need to know the difference because you've used interfaces to effectively hide the
@@ -157,7 +157,6 @@ I created this repository because:
 1) I frequently see gophers get concurrent batching wrong.
 2) I frequently see gophers avoid batching altogether because concurrency is hard.
 3) I frequently need this sort of batching and I'd rather not solve the same problem differently for every project.
-4) I want to help save the planet by making everyone's systems more energy efficient.
 
 ## Benchmarks
 
