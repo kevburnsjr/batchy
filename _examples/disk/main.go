@@ -9,24 +9,15 @@ import (
 	"github.com/kevburnsjr/batchy"
 )
 
-var batcher = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
-	var ids = make([]string, len(items))
-	for i, v := range items {
-		ids[i] = v.(string)
-	}
-	appendToFile(strings.Join(ids, "\n"))
-	return
-})
-
 func main() {
-	http.HandleFunc("/batched", func(w http.ResponseWriter, r *http.Request) {
-		err := batcher.Add(r.FormValue("id"))
+	http.HandleFunc("/unbatched", func(w http.ResponseWriter, r *http.Request) {
+		err := appendToFile(r.FormValue("id"))
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 		}
 	})
-	http.HandleFunc("/unbatched", func(w http.ResponseWriter, r *http.Request) {
-		err := appendToFile(r.FormValue("id"))
+	http.HandleFunc("/batched", func(w http.ResponseWriter, r *http.Request) {
+		err := batcher.Add(r.FormValue("id"))
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 		}
@@ -43,3 +34,12 @@ func appendToFile(str string) (err error) {
 	f.Close()
 	return
 }
+
+var batcher = batchy.New(100, 100*time.Millisecond, func(items []interface{}) (errs []error) {
+	var ids = make([]string, len(items))
+	for i, v := range items {
+		ids[i] = v.(string)
+	}
+	appendToFile(strings.Join(ids, "\n"))
+	return
+})

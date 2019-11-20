@@ -12,18 +12,6 @@ import (
 	"github.com/kevburnsjr/batchy"
 )
 
-var batcher = batchy.New(50, 100*time.Millisecond, func(items []interface{}) (errs []error) {
-	q := fmt.Sprintf(`INSERT INTO test (uid) VALUES %s`, strings.Trim(strings.Repeat(`(?),`, len(items)), ","))
-	_, err := db.Exec(q, items...)
-	if err != nil {
-		errs = make([]error, len(items))
-		for i := range errs {
-			errs[i] = err
-		}
-	}
-	return
-})
-
 var db *sql.DB
 
 func main() {
@@ -40,14 +28,14 @@ func main() {
 	}
 	defer db.Close()
 
-	http.HandleFunc("/batched", func(w http.ResponseWriter, r *http.Request) {
-		err := writeBatched(r.FormValue("id"))
+	http.HandleFunc("/unbatched", func(w http.ResponseWriter, r *http.Request) {
+		err := write(r.FormValue("id"))
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 		}
 	})
-	http.HandleFunc("/unbatched", func(w http.ResponseWriter, r *http.Request) {
-		err := write(r.FormValue("id"))
+	http.HandleFunc("/batched", func(w http.ResponseWriter, r *http.Request) {
+		err := writeBatched(r.FormValue("id"))
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 		}
@@ -55,12 +43,24 @@ func main() {
 	http.ListenAndServe(":8080", nil)
 }
 
+func write(str string) (err error) {
+	_, err = db.Exec(`INSERT INTO test (uid) VALUES (?)`, str)
+	return
+}
+
 func writeBatched(str string) (err error) {
 	err = batcher.Add(str)
 	return
 }
 
-func write(str string) (err error) {
-	_, err = db.Exec(`INSERT INTO test (uid) VALUES (?)`, str)
+var batcher = batchy.New(50, 100*time.Millisecond, func(items []interface{}) (errs []error) {
+	q := fmt.Sprintf(`INSERT INTO test (uid) VALUES %s`, strings.Trim(strings.Repeat(`(?),`, len(items)), ","))
+	_, err := db.Exec(q, items...)
+	if err != nil {
+		errs = make([]error, len(items))
+		for i := range errs {
+			errs[i] = err
+		}
+	}
 	return
-}
+})
