@@ -10,9 +10,8 @@ The throughput of APIs, web services and background workers can sometimes be imp
 through the introduction of artificial latency in support of concurrent batching. These efficiency improvements
 can result in increased service stability and total system throughput while lowering infrastructure costs.
 
-This is a general purpose library for concurrent batching of any sort of operation one might desire. It could
-be used to batch SQL inserts, API calls, disk writes, queue messages, stream records, emails, etc. The batcher
-hides asynchronous processing behind a syncronous interface.
+This is a general purpose concurrent batching library. It could be used to batch SQL inserts, API calls, disk writes, 
+queue messages, stream records, emails, etc. The batcher hides asynchronous processing behind a syncronous interface.
 
 ## Examples
 
